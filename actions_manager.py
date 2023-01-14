@@ -21,12 +21,14 @@ class ActionManager:
         self.path = []
         self.actions_queue = list()
         self.parallels_paths = self.is_there_are_parallels_paths()
+        self.rights_angles_paths = self.is_there_right_angles_paths()
 
     def add_tour(self):
         position: Position = find_best_position()
 
-        self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position))
-        # [self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position)) for position in self.parallels_paths]
+
+        [self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position)) for position in self.rights_angles_paths]
+        [self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position)) for position in self.parallels_paths]
 
     def sell_action(self):
         position: Position = find_best_position()
@@ -40,13 +42,13 @@ class ActionManager:
         available_paths = set()
         tiles = [tiles for path in self._map.paths for tiles in path.tiles]
         for tile in tiles:
-            if tile.y + 2 <= self._map.height:
+            if tile.y + 2 < self._map.height:
                 if Position(tile.x, tile.y + 2) in tiles and not tile.y + 1 in self.our_play_area.grid[tile.x]:
                     available_paths.add(Position(tile.x, tile.y + 1))
             if tile.y - 2 >= 0:
                 if Position(tile.x, tile.y - 2) in tiles and not tile.y - 1 in self.our_play_area.grid[tile.x]:
                     available_paths.add(Position(tile.x, tile.y - 1))
-            if tile.x + 2 <= self._map.width:
+            if tile.x + 2 < self._map.width:
                 if Position(tile.x + 2, tile.y) in tiles and not tile.y in self.our_play_area.grid[tile.x + 1]:
                     available_paths.add(Position(tile.x + 1, tile.y))
             if tile.x - 2 >= 0:
@@ -54,4 +56,20 @@ class ActionManager:
                     available_paths.add(Position(tile.x - 1, tile.y))
         return available_paths
 
-
+    def is_there_right_angles_paths(self):
+        available_paths = set()
+        tiles = [tiles for path in self._map.paths for tiles in path.tiles]
+        for tile in tiles:
+            if tile.y + 1 < self._map.height and tile.x + 1 < self._map.width:
+                if Position(tile.x, tile.y + 1) in tiles and Position(tile.x + 1, tile.y) in tiles and not tile.y + 1 in self.our_play_area.grid[tile.x + 1]:
+                    available_paths.add(Position(tile.x + 1, tile.y + 1))
+            if tile.x - 1 >= 0 and tile.y + 1 < self._map.height:
+                if Position(tile.x, tile.y + 1) in tiles and Position(tile.x - 1, tile.y) in tiles and not tile.y + 1 in self.our_play_area.grid[tile.x - 1]:
+                    available_paths.add(Position(tile.x - 1, tile.y + 1))
+            if tile.x - 1 >= 0 and tile.y - 1 >= 0:
+                if Position(tile.x - 1, tile.y) in tiles and Position(tile.x, tile.y - 1) in tiles and not tile.y - 1 in self.our_play_area.grid[tile.x - 1]:
+                    available_paths.add(Position(tile.x - 1, tile.y - 1))
+            if tile.x + 1 < self._map.width and tile.y - 1 >= 0:
+                if Position(tile.x + 1, tile.y) in tiles and Position(tile.x, tile.y - 1) in tiles and not tile.y - 1 in self.our_play_area.grid[tile.x + 1]:
+                    available_paths.add(Position(tile.x + 1, tile.y - 1))
+        return available_paths

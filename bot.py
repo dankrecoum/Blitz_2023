@@ -14,10 +14,10 @@ class Bot:
 
         other_team_ids = [team for team in game_message.teams if team != game_message.teamId]
         actions_manager = ActionManager(game_message)
-        actions_manager.sell_action()
+
         actions_manager.add_tour()
 
-        if other_team_ids:
-            actions_manager.send_reinforcement(other_team_ids[0])
+        # if other_team_ids:
+        #     actions_manager.send_reinforcement(other_team_ids[0])
 
         return actions_manager.actions_queue

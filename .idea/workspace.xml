@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fb030430-e920-4676-8a80-39bcb950ade3" name="Changes" comment="add config">
-      <change afterPath="$PROJECT_DIR$/JsonEncoder.py" afterDir="false" />
+    <list default="true" id="fb030430-e920-4676-8a80-39bcb950ade3" name="Changes" comment="add parallels">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/actions_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/actions_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application.py" beforeDir="false" afterPath="$PROJECT_DIR$/application.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +90,7 @@
       <workItem from="1673708710487" duration="895000" />
       <workItem from="1673709676091" duration="163000" />
       <workItem from="1673709853251" duration="412000" />
-      <workItem from="1673710282645" duration="6666000" />
+      <workItem from="1673710282645" duration="10514000" />
     </task>
     <task id="LOCAL-00001" summary="add config">
       <created>1673710317711</created>
@@ -102,7 +99,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673710317711</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="add parallels">
+      <created>1673717670686</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1673717670686</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -110,9 +114,10 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add config" />
-    <option name="LAST_COMMIT_MESSAGE" value="add config" />
+    <MESSAGE value="add parallels" />
+    <option name="LAST_COMMIT_MESSAGE" value="add parallels" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Blitz_2023$application.coverage" NAME="application Coverage Results" MODIFIED="1673716942197" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Blitz_2023$application.coverage" NAME="application Coverage Results" MODIFIED="1673722903491" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
