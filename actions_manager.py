@@ -15,9 +15,9 @@ def find_best_enemy_type():
 
 class ActionManager:
     def __init__(self):
-        self.void_paths = None
-        self.rights_angles_paths = None
-        self.parallels_paths = None
+        self.void_paths:list = None
+        self.rights_angles_paths:list = None
+        self.parallels_paths:list = None
         self.actions_queue = None
         self.path = None
         self.our_play_area = None
@@ -25,8 +25,8 @@ class ActionManager:
         self.id = None
         self.game_message = None
 
-    def set_game_message(self, gameMessage):
-        self.game_message = gameMessage
+    def set_game_message(self, gameMessage: GameMessage):
+        self.game_message: GameMessage = gameMessage
         self.id = gameMessage.teamId
         self._map = gameMessage.map
         self.our_play_area = gameMessage.playAreas[self.id]
@@ -35,16 +35,31 @@ class ActionManager:
 
     def set_paths_tower(self):
         self.path = [tiles for path in self._map.paths for tiles in path.tiles]
-        self.parallels_paths = self.is_there_are_parallels_paths()
-        self.rights_angles_paths = self.is_there_right_angles_paths()
-        self.void_paths = self.fill_the_void()
+        self.parallels_paths = list(self.is_there_are_parallels_paths())
+        self.rights_angles_paths = list(self.is_there_right_angles_paths())
+        self.void_paths = list(self.fill_the_void())
     def add_tour(self):
-        position: Position = find_best_position()
+        # a = self.game_message.
 
+        # merge_set = self.rights_angles_paths.union(self.parallels_paths).union(self.void_paths)
 
-        [self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position)) for position in self.rights_angles_paths]
-        [self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position)) for position in self.parallels_paths]
-        [self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position)) for position in self.void_paths]
+        for position in self.rights_angles_paths[:1]:
+            if self.game_message.teamInfos[self.id].money  >= self.game_message.shop.towers[TowerType.SPEAR_SHOOTER].price:
+                self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position))
+                del self.rights_angles_paths[0]
+        for position in self.parallels_paths.copy()[:1]:
+            if self.game_message.teamInfos[self.id].money  >= self.game_message.shop.towers[TowerType.SPEAR_SHOOTER].price:
+
+                self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position))
+                del self.parallels_paths[0]
+        for position in self.void_paths.copy()[:1]:
+            if self.game_message.teamInfos[self.id].money >= self.game_message.shop.towers[TowerType.SPEAR_SHOOTER].price:
+
+                self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position))
+                del self.void_paths[0]
+        # [self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position)) for position in merge_set]
+        # [self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position)) for position in self.parallels_paths]
+        # [self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position)) for position in self.void_paths]
 
     def sell_action(self):
         position: Position = find_best_position()
@@ -72,7 +87,7 @@ class ActionManager:
                     available_paths.add(Position(tile.x - 1, tile.y))
         return available_paths
 
-    def is_there_right_angles_paths(self):
+    def is_there_right_angles_paths(self) -> set:
         available_paths = set()
         tiles = self.path
         for tile in tiles:
