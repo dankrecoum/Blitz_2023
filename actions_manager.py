@@ -32,6 +32,9 @@ class ActionManager:
         self.our_play_area = gameMessage.playAreas[self.id]
         self.path = []
         self.actions_queue = list()
+
+    def set_paths_tower(self):
+        self.path = [tiles for path in self._map.paths for tiles in path.tiles]
         self.parallels_paths = self.is_there_are_parallels_paths()
         self.rights_angles_paths = self.is_there_right_angles_paths()
         self.void_paths = self.fill_the_void()
@@ -53,7 +56,7 @@ class ActionManager:
 
     def is_there_are_parallels_paths(self):
         available_paths = set()
-        tiles = [tiles for path in self._map.paths for tiles in path.tiles]
+        tiles = self.path
         for tile in tiles:
             if tile.y + 2 < self._map.height:
                 if Position(tile.x, tile.y + 2) in tiles and not tile.y + 1 in self.our_play_area.grid[tile.x]:
@@ -71,7 +74,7 @@ class ActionManager:
 
     def is_there_right_angles_paths(self):
         available_paths = set()
-        tiles = [tiles for path in self._map.paths for tiles in path.tiles]
+        tiles = self.path
         for tile in tiles:
             if tile.y + 1 < self._map.height and tile.x + 1 < self._map.width:
                 if Position(tile.x, tile.y + 1) in tiles and Position(tile.x + 1, tile.y) in tiles and not tile.y + 1 in self.our_play_area.grid[tile.x + 1]:
@@ -89,7 +92,7 @@ class ActionManager:
 
     def fill_the_void(self):
         available_paths = set()
-        tiles = [tiles for path in self._map.paths for tiles in path.tiles]
+        tiles = self.path
         for tile in tiles:
             if tile.y + 1 < self._map.height:
 

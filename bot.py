@@ -15,7 +15,8 @@ class Bot:
 
         other_team_ids = [team for team in game_message.teams if team != game_message.teamId]
         self.actions_manager.set_game_message(game_message)
-
+        if self.actions_manager.parallels_paths == None:
+            self.actions_manager.set_paths_tower()
         self.actions_manager.add_tour()
 
         # if other_team_ids:
