@@ -14,7 +14,19 @@ def find_best_enemy_type():
 
 
 class ActionManager:
-    def __init__(self, gameMessage: GameMessage):
+    def __init__(self):
+        self.void_paths = None
+        self.rights_angles_paths = None
+        self.parallels_paths = None
+        self.actions_queue = None
+        self.path = None
+        self.our_play_area = None
+        self._map = None
+        self.id = None
+        self.game_message = None
+
+    def set_game_message(self, gameMessage):
+        self.game_message = gameMessage
         self.id = gameMessage.teamId
         self._map = gameMessage.map
         self.our_play_area = gameMessage.playAreas[self.id]
@@ -22,13 +34,14 @@ class ActionManager:
         self.actions_queue = list()
         self.parallels_paths = self.is_there_are_parallels_paths()
         self.rights_angles_paths = self.is_there_right_angles_paths()
-
+        self.void_paths = self.fill_the_void()
     def add_tour(self):
         position: Position = find_best_position()
 
 
         [self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position)) for position in self.rights_angles_paths]
         [self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position)) for position in self.parallels_paths]
+        [self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position)) for position in self.void_paths]
 
     def sell_action(self):
         position: Position = find_best_position()
@@ -73,3 +86,36 @@ class ActionManager:
                 if Position(tile.x + 1, tile.y) in tiles and Position(tile.x, tile.y - 1) in tiles and not tile.y - 1 in self.our_play_area.grid[tile.x + 1]:
                     available_paths.add(Position(tile.x + 1, tile.y - 1))
         return available_paths
+
+    def fill_the_void(self):
+        available_paths = set()
+        tiles = [tiles for path in self._map.paths for tiles in path.tiles]
+        for tile in tiles:
+            if tile.y + 1 < self._map.height:
+
+                if not Position(tile.x, tile.y + 1) in tiles and (not tile.x in self.our_play_area.grid or not tile.y + 1 in self.our_play_area.grid[tile.x]):
+                    available_paths.add(Position(tile.x, tile.y + 1))
+            if tile.x + 1 < self._map.width:
+                if not Position(tile.x + 1, tile.y) in tiles and (not tile.x + 1 in self.our_play_area.grid or not tile.y in self.our_play_area.grid[tile.x + 1]):
+                    available_paths.add(Position(tile.x + 1, tile.y))
+            if tile.x - 1 >= 0:
+                if not Position(tile.x - 1, tile.y) in tiles and (not tile.x - 1 in self.our_play_area.grid or not tile.y in self.our_play_area.grid[tile.x - 1]):
+                    available_paths.add(Position(tile.x - 1, tile.y))
+            if tile.y - 1 >= 0:
+                if not Position(tile.x, tile.y - 1) in tiles and (not tile.x in self.our_play_area.grid or not tile.y - 1 in self.our_play_area.grid[tile.x]):
+                    available_paths.add(Position(tile.x, tile.y - 1))
+            if tile.y + 1 < self._map.height and tile.x + 1 < self._map.width:
+                if not Position(tile.x + 1, tile.y + 1) in tiles and (not tile.x + 1 in self.our_play_area.grid or not tile.y + 1 in self.our_play_area.grid[tile.x + 1]):
+                    available_paths.add(Position(tile.x + 1, tile.y + 1))
+            if tile.x + 1 < self._map.width and tile.y - 1 >= 0:
+                if not Position(tile.x + 1, tile.y - 1) in tiles and (not tile.x + 1 in self.our_play_area.grid or not tile.y - 1 in self.our_play_area.grid[tile.x + 1]):
+                    available_paths.add(Position(tile.x + 1, tile.y - 1))
+            if tile.x - 1 >= 0 and tile.y + 1 < self._map.height:
+                if not Position(tile.x - 1, tile.y + 1) in tiles and (not tile.x - 1 in self.our_play_area.grid or not tile.y + 1 in self.our_play_area.grid[tile.x - 1]):
+                    available_paths.add(Position(tile.x - 1, tile.y + 1))
+            if tile.x - 1 >= 0 and tile.y - 1 >= 0:
+                if not Position(tile.x - 1, tile.y - 1) in tiles and (not tile.x in self.our_play_area.grid or not tile.y - 1 in self.our_play_area.grid[tile.x]):
+                    available_paths.add(Position(tile.x - 1, tile.y - 1))
+        return available_paths
+
+
