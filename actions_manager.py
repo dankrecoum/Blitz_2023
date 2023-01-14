@@ -25,7 +25,7 @@ class ActionManager:
 
     def sell_action(self):
         position: Position = find_best_position()
-        self.actions_queue.append(SellAction(Position(0, 0)))
+        self.actions_queue.append(SellAction(position))
 
     def send_reinforcement(self, other_teams_id):
         reinforcement_enemy_type: EnemyType = find_best_enemy_type()
