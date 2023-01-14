@@ -13,6 +13,7 @@ def find_best_enemy_type():
     return EnemyType.LVL1
 
 
+
 class ActionManager:
     def __init__(self):
         self.void_paths = None
@@ -38,17 +39,22 @@ class ActionManager:
         self.parallels_paths = self.is_there_are_parallels_paths()
         self.rights_angles_paths = self.is_there_right_angles_paths()
         self.void_paths = self.fill_the_void()
-    def add_tour(self):
+    def add_tour(self, angle_towers: list):
         position: Position = find_best_position()
 
 
-        [self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position)) for position in self.rights_angles_paths]
+        [ self.add_spears(position, angle_towers) for position in self.rights_angles_paths]
         [self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position)) for position in self.parallels_paths]
         [self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position)) for position in self.void_paths]
 
-    def sell_action(self):
-        position: Position = find_best_position()
-        self.actions_queue.append(SellAction(position))
+
+    def add_spears(self, position, angle_towers: list):
+        self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position))
+        angle_towers.append(position)
+
+    def sell_action(self, angle_towers):
+        for position in angle_towers:
+            self.actions_queue.append(SellAction(position))
 
     def send_reinforcement(self, other_teams_id):
         reinforcement_enemy_type: EnemyType = find_best_enemy_type()

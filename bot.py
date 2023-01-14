@@ -7,6 +7,8 @@ class Bot:
     def __init__(self):
         print("Initializing your super mega duper bot")
         self.actions_manager = ActionManager()
+        self.angle_towers = []
+
 
     def get_next_move(self, game_message: GameMessage):
         """
@@ -17,7 +19,10 @@ class Bot:
         self.actions_manager.set_game_message(game_message)
         if self.actions_manager.parallels_paths == None:
             self.actions_manager.set_paths_tower()
-        self.actions_manager.add_tour()
+        self.actions_manager.add_tour(self.angle_towers)
+
+        if (game_message.round >= 6):
+            self.actions_manager.sell_action(self.angle_towers)
 
         # if other_team_ids:
         #     actions_manager.send_reinforcement(other_team_ids[0])
