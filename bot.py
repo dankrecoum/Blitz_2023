@@ -1,3 +1,4 @@
+from actions_manager import ActionManager
 from game_message import *
 from actions import *
 
@@ -12,12 +13,11 @@ class Bot:
         """
 
         other_team_ids = [team for team in game_message.teams if team != game_message.teamId]
-        actions = list()
-
-        actions.append(SellAction(Position(0, 0)))
-        actions.append(BuildAction(TowerType.SPEAR_SHOOTER, Position(0, 0)))
+        actions_manager = ActionManager(game_message.map)
+        actions_manager.sell_action()
+        actions_manager.add_tour()
 
         if other_team_ids:
-            actions.append(SendReinforcementsAction(EnemyType.LVL1, other_team_ids[0]))
+            actions_manager.send_reinforcement(other_team_ids[0])
 
-        return actions
+        return actions_manager.actions_queue
