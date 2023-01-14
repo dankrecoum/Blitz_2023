@@ -14,7 +14,7 @@ class Bot:
         """
 
         other_team_ids = [team for team in game_message.teams if team != game_message.teamId]
-        actions_manager = ActionManager(game_message)
+        actions_manager = ActionManager(game_message, self.last_positions)
         # actions_manager.sell_action()
         self.last_positions.append(actions_manager.add_tower(self.last_positions[len(self.last_positions)-1]))
 
