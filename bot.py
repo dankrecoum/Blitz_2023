@@ -19,5 +19,6 @@ class Bot:
 
         if other_team_ids:
             actions_manager.send_reinforcement(other_team_ids[0])
+        #     todo maybe update enemy levels
 
         return actions_manager.actions_queue
