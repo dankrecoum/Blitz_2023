@@ -8,12 +8,14 @@ import os
 import cattrs
 import websockets
 
+# from JsonEncoder import EnhancedJSONEncoder
 from bot import Bot
 from game_message import GameMessage
 
 
 async def run():
     uri = "ws://127.0.0.1:8765"
+    # encoder = EnhancedJSONEncoder()
 
     async with websockets.connect(uri, max_size=None) as websocket:
         bot = Bot()
@@ -47,6 +49,7 @@ async def game_loop(websocket: websockets.WebSocketServerProtocol, bot: Bot):
         }
 
         await websocket.send(json.dumps(payload))
+
 
 
 if __name__ == "__main__":

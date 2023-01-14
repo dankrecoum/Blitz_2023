@@ -13,7 +13,7 @@ class Bot:
         """
 
         other_team_ids = [team for team in game_message.teams if team != game_message.teamId]
-        actions_manager = ActionManager(game_message.map)
+        actions_manager = ActionManager(game_message)
         actions_manager.sell_action()
         actions_manager.add_tour()
 
