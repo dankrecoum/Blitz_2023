@@ -38,12 +38,15 @@ class ActionManager:
         self.parallels_paths = list(self.is_there_are_parallels_paths())
         self.rights_angles_paths = list(self.is_there_right_angles_paths())
         self.void_paths = list(self.fill_the_void())
+        self.parallels_paths_set = list(self.is_there_are_parallels_paths())
+        self.rights_angles_paths_set = list(self.is_there_right_angles_paths())
+        self.void_paths_set = list(self.fill_the_void())
     def add_tour(self):
         # a = self.game_message.
 
         # merge_set = self.rights_angles_paths.union(self.parallels_paths).union(self.void_paths)
 
-        for position in self.rights_angles_paths[:1]:
+        for position in self.rights_angles_paths.copy()[:1]:
             if self.game_message.teamInfos[self.id].money  >= self.game_message.shop.towers[TowerType.SPEAR_SHOOTER].price:
                 self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position))
                 del self.rights_angles_paths[0]
@@ -57,6 +60,26 @@ class ActionManager:
 
                 self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position))
                 del self.void_paths[0]
+        if len(self.rights_angles_paths) == 0 and len(self.parallels_paths) == 0 and len(self.void_paths) == 0:
+            for position in self.rights_angles_paths_set.copy()[:1]:
+                if self.game_message.teamInfos[self.id].money >= self.game_message.shop.towers[
+                    TowerType.SPEAR_SHOOTER].price:
+                    self.actions_queue.append(SellAction(position))
+                    self.actions_queue.append(BuildAction(TowerType.BOMB_SHOOTER, position))
+                    del self.rights_angles_paths_set[0]
+            for position in self.parallels_paths_set.copy()[:1]:
+                if self.game_message.teamInfos[self.id].money >= self.game_message.shop.towers[
+                    TowerType.SPEAR_SHOOTER].price:
+                    self.actions_queue.append(SellAction(position))
+                    self.actions_queue.append(BuildAction(TowerType.BOMB_SHOOTER, position))
+                    del self.parallels_paths_set[0]
+            for position in self.void_paths_set.copy()[:1]:
+                if self.game_message.teamInfos[self.id].money >= self.game_message.shop.towers[
+                    TowerType.SPEAR_SHOOTER].price:
+                    self.actions_queue.append(SellAction(position))
+                    self.actions_queue.append(BuildAction(TowerType.BOMB_SHOOTER, position))
+                    del self.void_paths_set[0]
+
         # [self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position)) for position in merge_set]
         # [self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position)) for position in self.parallels_paths]
         # [self.actions_queue.append(BuildAction(TowerType.SPEAR_SHOOTER, position)) for position in self.void_paths]
